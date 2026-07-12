@@ -114,8 +114,8 @@ AI-Customer-Enquiry-Automation/
 ---
 ### Google Sheets Database
 
-<img width="400" height="308" alt="image" src="https://github.com/user-attachments/assets/40167c79-fc86-4845-81e6-3b73dfba0996" />
-<img width="400" height="129" alt="image" src="https://github.com/user-attachments/assets/c7032864-e9c5-44f5-9999-365c9d2e947c" />
+<img width="500" height="308" alt="image" src="https://github.com/user-attachments/assets/40167c79-fc86-4845-81e6-3b73dfba0996" />
+<img width="500" height="129" alt="image" src="https://github.com/user-attachments/assets/c7032864-e9c5-44f5-9999-365c9d2e947c" />
 
 ---
 
