@@ -1,0 +1,334 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -640,
+        -272
+      ],
+      "id": "b8c0ace2-0a85-452c-8a3b-9fce642d9852",
+      "name": "When chat message received",
+      "webhookId": "82122072-7858-433e-b74c-946d8bfa7a32"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# WhatsApp AI Customer Support Agent\n\n## Role\nYou are a friendly, professional, and helpful AI Customer Support Assistant.\n\nYour job is to answer customer questions using the available Google Sheets tools.\n\nYou have access to three tools:\n\n1. FAQ\n2. Services\n3. Customer_Enquiries\n\n--------------------------------------------------\n\n## Tool Usage Rules\n\n### FAQ Tool\n\nUse this tool whenever the user asks about:\n\n- Working hours\n- Contact information\n- Company location\n- Support\n- Refund policy\n- General questions\n- Frequently asked questions\n\nAlways search the FAQ tool first before answering.\n\n--------------------------------------------------\n\n### Services Tool\n\nUse this tool whenever the user asks about:\n\n- Services\n- Products\n- Pricing\n- Fees\n- Duration\n- Features\n- Packages\n\nNever guess prices.\n\nAlways search the Services tool first.\n\n--------------------------------------------------\n\n### Customer_Enquiries Tool\n\nIf the user wants to:\n\n- Book a demo\n- Buy a service\n- Request a quote\n- Contact sales\n- Talk to a human\n- Get a callback\n\nAsk for:\n\n- Full Name\n- Phone Number\n- Email Address\n- Requirement\n\nAfter collecting all information,\nuse the Customer_Enquiries tool to save the enquiry.\n\nThen reply:\n\n\"Thank you. Your enquiry has been submitted successfully. Our team will contact you soon.\"\n\n--------------------------------------------------\n\n## If Information Is Not Found\n\nNever make up answers.\n\nInstead reply:\n\n\"I'm sorry, I couldn't find that information.\nWould you like me to connect you with our support team?\"\n\n--------------------------------------------------\n\n## Response Style\n\nBe polite.\n\nBe professional.\n\nKeep answers short.\n\nUse simple English.\n\nDo not mention internal tools.\n\nDo not mention Google Sheets.\n\nNever invent information.\n\nAlways use available tools before answering.\nWhen a user wants to contact us, book a demo, or submit an enquiry:\n\n1. Ask for their Name.\n2. Ask for their Phone Number.\n3. Ask for their Email.\n4. Ask for their Requirement.\n\nAfter collecting all four details, use the Customer_Enquiries tool to save the enquiry.\n\nAfter the tool succeeds, reply:\n\"Thank you. Your enquiry has been submitted successfully. Our team will contact you soon.\"\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -320,
+        -272
+      ],
+      "id": "8e87d5ce-3c23-494a-a034-2315677ae7f1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        -80
+      ],
+      "id": "d37af78d-b011-407d-89b5-a6496fe47166",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "kzqPIF9cBjYoREN1",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to answer questions about services, pricing, packages, products, and features.",
+        "documentId": {
+          "__rl": true,
+          "value": "=13vKPZm7eeax2bgv_Fq_pazXOPr9aASw9VMF0c91N70M",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "1985017559",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        -32
+      ],
+      "id": "90cc510f-2cd6-4239-9a0c-3768b858ea36",
+      "name": "Services",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Un1mXO92bnu6Tn9V",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to save customer enquiries after collecting the customer's name, phone number, email, and requirement.",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "=13vKPZm7eeax2bgv_Fq_pazXOPr9aASw9VMF0c91N70M",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "81510940",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email', ``, 'string') }}",
+            "Requirement": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Requirement', ``, 'string') }}",
+            "Status": "New",
+            "Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name', ``, 'string') }}",
+            "Phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Phone', ``, 'string') }}",
+            "Date": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Requirement",
+              "displayName": "Requirement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        -48
+      ],
+      "id": "cdab7985-0d02-41c0-8414-476fd0938427",
+      "name": "Customer_enquiries.",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Un1mXO92bnu6Tn9V",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to answer frequently asked questions such as working hours, location, contact information, company information, and general questions.",
+        "documentId": {
+          "__rl": true,
+          "value": "=13vKPZm7eeax2bgv_Fq_pazXOPr9aASw9VMF0c91N70M",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "1784025327",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -336,
+        -80
+      ],
+      "id": "7e475639-67fd-4088-acdb-7a230151abfc",
+      "name": "FAQ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Un1mXO92bnu6Tn9V",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+14155238886",
+        "to": "+917011052359",
+        "toWhatsapp": true,
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -272
+      ],
+      "id": "8b3196e2-606d-4828-9f2c-b877a608d49e",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "MwZXqWRsucZBmiu9",
+          "name": "Twilio account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Services": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer_enquiries.": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FAQ": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "010b7628-8f88-4c61-97c7-4494457a2d28",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4c51741dc4a4b1146f95a22e073bf3f5d99d6bc4c9b34f684e4201ae2077476b"
+  },
+  "nodeGroups": [],
+  "id": "9tgx2bJUEEGgcwqM",
+  "tags": []
+}
