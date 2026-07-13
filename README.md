@@ -238,9 +238,6 @@ AI Agent
 **PRATIK SHUBHAM**
 
 MBA (Artificial Intelligence & Data Science)
-
-GitHub: https://github.com/divaaasharma
-
 ---
 
 ## License
